@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:,">
 <title>The Third Time — Barbering by appointment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300&family=Instrument+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 <style>
 :root{
   /* Porcelain and tile at the open; oiled leather and brass by the end. */
@@ -130,9 +133,9 @@ header::before{
 .vignette{
   position:absolute; inset:0; pointer-events:none;
   background:
-    linear-gradient(to bottom, oklch(0.13 0.02 196 / .82) 0%, transparent 24%, transparent 56%, oklch(0.13 0.02 196 / .9) 100%),
-    linear-gradient(to right, transparent 76%, oklch(0.13 0.02 196 / .7) 100%),
-    radial-gradient(125% 88% at 48% 50%, transparent 32%, oklch(0.13 0.02 196 / .64) 100%);
+    linear-gradient(to bottom, oklch(0.13 0.02 196 / .52) 0%, transparent 16%,
+                    transparent 78%, oklch(0.13 0.02 196 / .55) 100%),
+    linear-gradient(to right, transparent 88%, oklch(0.13 0.02 196 / .38) 100%);
 }
 /* Film grain — kept far below the threshold of "texture as decoration". */
 .grain{
@@ -145,14 +148,8 @@ header::before{
   min-height:100svh; display:flex; align-items:center; padding-block:6rem;
   position:relative;
 }
-.beat::before{
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(74% 70% at 22% 50%,
-    oklch(0.10 0.018 198 / .93) 0%, oklch(0.10 0.018 198 / .6) 46%, oklch(0.10 0.018 198 / 0) 82%);
-  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
-  mask-image:linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
-}
-.beat-inner{ width:min(100% - 3rem, 37rem); margin-left:clamp(1.5rem,7vw,6rem); position:relative; }
+
+.beat-inner{ width:min(100% - 3rem, 34rem); margin-left:clamp(1.5rem,7vw,6rem); position:relative; }
 
 .guard{
   font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.16em;
@@ -167,7 +164,16 @@ header::before{
 .beat h2 em{ font-style:italic; }
 .beat p{
   color:oklch(0.9 0.012 90); font-size:clamp(1rem,1.4vw,1.1rem);
-  max-width:46ch; text-wrap:pretty;
+  max-width:42ch; text-wrap:pretty;
+}
+
+
+.panel{
+  background:oklch(0.12 0.018 198 / .38);
+  border:1px solid oklch(1 0 0 / .085);
+  padding:1.85rem 2.05rem 1.95rem;
+  backdrop-filter:blur(2.5px);
+  -webkit-backdrop-filter:blur(2.5px);
 }
 
 /* Words are the reveal unit — each rises on its own offset. */
@@ -175,17 +181,11 @@ header::before{
 
 .hero{ min-height:100svh; display:flex; align-items:flex-end; padding:0 0 clamp(4rem,10vh,7rem);
   position:relative; }
-.hero::before{
-  content:''; position:absolute; inset:0; pointer-events:none;
-  background:radial-gradient(78% 74% at 24% 70%,
-    oklch(0.10 0.018 198 / .9) 0%, oklch(0.10 0.018 198 / .56) 46%, oklch(0.10 0.018 198 / 0) 82%);
-  -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
-  mask-image:linear-gradient(to bottom, transparent 0%, #000 15%, #000 85%, transparent 100%);
-}
-.hero-inner{ width:min(100% - 3rem, 52rem); margin-left:clamp(1.5rem,7vw,6rem); position:relative; }
+
+.hero-inner{ width:min(100% - 3rem, 44rem); margin-left:clamp(1.5rem,7vw,6rem); position:relative; }
 .hero h1{
   font-family:'Newsreader',serif; font-weight:400;
-  font-size:clamp(2.3rem,6.4vw,4.7rem); line-height:1.02;
+  font-size:clamp(2.1rem,5.4vw,3.9rem); line-height:1.02;
   letter-spacing:-.028em; text-wrap:balance; margin-bottom:1.4rem;
 }
 .hero h1 em{ font-style:italic; color:var(--brass); }
@@ -324,10 +324,10 @@ footer{
 
 <nav class="rail" aria-label="Jump to a point in the cut">
   <span class="rail-cap">Guard</span>
-  <button class="tick" data-to="0.02"><i></i>#4</button>
-  <button class="tick" data-to="0.30"><i></i>#2</button>
-  <button class="tick" data-to="0.58"><i></i>#1</button>
-  <button class="tick" data-to="0.88"><i></i>#0</button>
+  <button class="tick" data-to="0.20"><i></i>#4</button>
+  <button class="tick" data-to="0.42"><i></i>#2</button>
+  <button class="tick" data-to="0.64"><i></i>#1</button>
+  <button class="tick" data-to="0.86"><i></i>#0</button>
 </nav>
 
 <main id="top">
@@ -340,7 +340,7 @@ footer{
 
     <div class="beats">
       <div class="hero">
-        <div class="hero-inner">
+        <div class="hero-inner panel">
           <h1 data-split>He cancelled the appointment <em>twice.</em></h1>
           <p data-split>The third time he sat down, looked at his hands, and let somebody else decide what he ought to look like.</p>
           <div class="cue"><i></i> Scroll to sit down</div>
@@ -348,7 +348,7 @@ footer{
       </div>
 
       <section class="beat" aria-labelledby="b1">
-        <div class="beat-inner">
+        <div class="beat-inner panel">
           <span class="guard">#4 · 00:00</span>
           <h2 id="b1" data-split>He wouldn't look up.</h2>
           <p data-split>Three years of letting it grow out, because choosing felt like more effort than he had that week. He booked twice and cancelled twice. The third time he got as far as the chair.</p>
@@ -356,7 +356,7 @@ footer{
       </section>
 
       <section class="beat" aria-labelledby="b2">
-        <div class="beat-inner">
+        <div class="beat-inner panel">
           <span class="guard">#2 · 00:11</span>
           <h2 id="b2" data-split>“What are we doing today?”</h2>
           <p data-split>He said <em>whatever you think.</em> People say that when nobody has asked them a real question in a while. So the barber asked a second one, and a third, and somewhere around the fourth he started answering properly.</p>
@@ -364,7 +364,7 @@ footer{
       </section>
 
       <section class="beat" aria-labelledby="b3">
-        <div class="beat-inner">
+        <div class="beat-inner panel">
           <span class="guard">#1 · 00:26</span>
           <h2 id="b3" data-split>The shape was already there.</h2>
           <p data-split>A cut isn't an invention. It's finding the line the head was always going to have, then taking away the part that was hiding it. Forty minutes of small exact decisions, none of them reversible.</p>
@@ -372,7 +372,7 @@ footer{
       </section>
 
       <section class="beat" aria-labelledby="b4">
-        <div class="beat-inner">
+        <div class="beat-inner panel">
           <span class="guard">#0 · 00:38</span>
           <h2 id="b4" data-split>Then the chair turns around.</h2>
           <p data-split>He didn't smile straight away. He just looked — the way you look at a face you haven't seen in a long time and have to decide whether you recognise it.</p>
@@ -502,147 +502,112 @@ footer{
     return ((r.top + r.height/2) - vh/2) / vh;
   }
 
-  /* ── Text choreography, driven by scroll position, not by time ── */
-  var IN = 0.62, OUT = 0.55, STAG = 0.075;
+  /* ── Motion is GSAP ScrollTrigger ──────────────────────────────
+     Every reveal is scrubbed against scroll position, so the copy is
+     tied to the film rather than to a timer. */
+  var GUARDS_AT = [0, 0.30, 0.58, 0.88];
 
-  function choreograph(){
-    var vh = window.innerHeight;
+  function readout(p){
+    document.documentElement.style.setProperty('--heat', p.toFixed(3));
+    document.documentElement.style.setProperty('--push', (1 + p * 0.05).toFixed(4));
+    var gi = p < 0.31 ? 0 : p < 0.53 ? 1 : p < 0.75 ? 2 : 3;
+    guardOut.textContent = GUARDS[gi];
+    for(var i = 0; i < ticks.length; i++) ticks[i].dataset.on = (i === gi) ? '1' : '0';
+  }
 
-    // Beats + hero: reveal on approach, drift out on exit.
-    [].forEach.call(document.querySelectorAll('.beat-inner, .hero-inner'), function(box){
-      var r = box.getBoundingClientRect();
-      if(r.bottom < -vh || r.top > vh*2){
-        // Off-screen: park it at zero. Returning without writing would
-        // freeze whatever opacity it happened to hold on the way out.
-        if(box.style.opacity !== '0') box.style.opacity = '0';
-        return;
-      }
-      var d = dist(box);
-      var reveal = easeOut(clamp01((IN - d) / IN));
-      var exit   = clamp01((OUT + d) / OUT);
-      var vis    = reveal * exit;
+  function build(){
+    gsap.registerPlugin(ScrollTrigger);
+    var mm = gsap.matchMedia();
 
-      box.style.opacity = vis;
-      box.style.transform = 'translate3d(0,' + (-d * 26).toFixed(2) + 'px,0)';
+    mm.add('(prefers-reduced-motion: no-preference)', function(){
 
-      var groups = box.querySelectorAll('[data-split]');
-      for(var g = 0; g < groups.length; g++){
-        var ws = groups[g]._words; if(!ws) continue;
-        var n = ws.length;
-        for(var i = 0; i < n; i++){
-          var w = clamp01(reveal * (1 + n*STAG) - i*STAG);
-          ws[i].style.opacity = w;
-          ws[i].style.transform = 'translate3d(0,' + ((1-w) * 20).toFixed(2) + 'px,0)';
+      // Frame scrub. scrub:0.5 is GSAP easing toward the scroll target —
+      // this is what replaces the hand-written lerp.
+      var f = { i: 0 };
+      gsap.to(f, {
+        i: TOTAL - 1, ease: 'none',
+        onUpdate: function(){ paint(f.i); },
+        scrollTrigger: {
+          trigger: film, start: 'top top', end: 'bottom bottom', scrub: 0.5,
+          onUpdate: function(self){ readout(self.progress); }
         }
-      }
-      var guard = box.querySelector('.guard');
-      if(guard){
-        guard.style.opacity = clamp01(reveal * 1.6);
-        guard.style.transform = 'translate3d(' + ((1-reveal) * -14).toFixed(2) + 'px,0,0)';
-      }
+      });
+
+      // Each copy block: panel fades up, guard slides in, words rise on a
+      // stagger, hold, then drift out. All scrubbed, none of it timed.
+      gsap.utils.toArray('.hero-inner, .beat-inner').forEach(function(box){
+        var words = box.querySelectorAll('.w');
+        var guard = box.querySelector('.guard');
+        var tl = gsap.timeline({ scrollTrigger: {
+          trigger: box.closest('.hero, .beat'),
+          start: 'top bottom', end: 'bottom top', scrub: 0.7
+        }});
+        tl.fromTo(box, { autoAlpha:0, y:26 }, { autoAlpha:1, y:0, duration:0.55, ease:'power2.out' }, 0);
+        if(guard) tl.fromTo(guard, { autoAlpha:0, x:-14 }, { autoAlpha:1, x:0, duration:0.45 }, 0.10);
+        tl.fromTo(words, { autoAlpha:0, y:20 },
+          { autoAlpha:1, y:0, duration:0.6, ease:'power2.out', stagger:{ each:0.045 } }, 0.15);
+        tl.to({}, { duration:1.15 });
+        tl.to(words, { autoAlpha:0, y:-14, duration:0.45, stagger:{ each:0.02 } }, '>');
+        tl.to(box,   { autoAlpha:0, y:-22, duration:0.5 }, '<0.05');
+      });
+
+      // Below the film — the rest of the page moves too.
+      gsap.utils.toArray('.rev').forEach(function(el){
+        var words = el.querySelectorAll('.w');
+        var trig  = { trigger: el, start: 'top 86%', once: true };
+        if(words.length){
+          gsap.from(words, { autoAlpha:0, y:18, duration:0.75, ease:'power3.out',
+            stagger:0.035, scrollTrigger:trig });
+        } else {
+          gsap.from(el, { autoAlpha:0, y:22, duration:0.8, ease:'power3.out', scrollTrigger:trig });
+        }
+      });
+
+      // The book settles in, then writes itself one name at a time.
+      gsap.from('.page', { autoAlpha:0, y:28, rotation:2.6, duration:0.9, ease:'power3.out',
+        scrollTrigger:{ trigger:'.page', start:'top 84%', once:true }});
+      gsap.from('.page li', { autoAlpha:0, x:-18, duration:0.55, ease:'power2.out',
+        stagger:0.075, scrollTrigger:{ trigger:'.page', start:'top 78%', once:true }});
+      gsap.from('.fact', { autoAlpha:0, y:20, duration:0.6, ease:'power2.out',
+        stagger:0.09, scrollTrigger:{ trigger:'.facts', start:'top 86%', once:true }});
     });
 
-    // Below the film: one-way reveals, so the whole page moves, not just the top.
-    [].forEach.call(document.querySelectorAll('.rev'), function(el){
-      var r = el.getBoundingClientRect();
-      if(r.top > vh*1.2){ if(el.style.opacity !== '0') el.style.opacity = '0'; return; }
-      if(r.bottom < -vh*0.5){ if(el.style.opacity !== '1') el.style.opacity = '1'; return; }
-      var d = dist(el);
-      var reveal = easeOut(clamp01((0.85 - d) / 0.85));
-      el.style.opacity = reveal;
-      el.style.transform = 'translate3d(0,' + ((1-reveal)*26).toFixed(2) + 'px,0)';
-      var grp = el.matches('[data-split]') ? el : null;
-      if(grp && grp._words){
-        var ws = grp._words, n = ws.length;
-        for(var i = 0; i < n; i++){
-          var w = clamp01(reveal * (1 + n*STAG) - i*STAG);
-          ws[i].style.opacity = w;
-          ws[i].style.transform = 'translate3d(0,' + ((1-w)*16).toFixed(2) + 'px,0)';
-        }
-      }
-    });
-
-    // The book writes itself in, one name at a time.
-    var page = document.querySelector('.page');
-    if(page){
-      var pr = page.getBoundingClientRect();
-      if(pr.top < vh*1.2 && pr.bottom > -vh*0.5){
-        var pd = dist(page);
-        var pv = easeOut(clamp01((0.9 - pd) / 0.9));
-        var lis = page.querySelectorAll('li');
-        for(var i = 0; i < lis.length; i++){
-          var w = clamp01(pv * (1 + lis.length*0.09) - i*0.09);
-          lis[i].style.opacity = w;
-          lis[i].style.transform = 'translate3d(' + ((1-w)*-16).toFixed(2) + 'px,0,0)';
-        }
-      }
-    }
-
-    // Facts stagger in the same way.
-    var facts = document.querySelectorAll('.fact');
-    if(facts.length){
-      var fr = facts[0].getBoundingClientRect();
-      if(fr.top < vh*1.3 && fr.bottom > -vh){
-        var fd = dist(facts[0].parentNode);
-        var fv = easeOut(clamp01((0.9 - fd) / 0.9));
-        for(var i = 0; i < facts.length; i++){
-          var w = clamp01(fv * (1 + facts.length*0.11) - i*0.11);
-          facts[i].style.opacity = w;
-          facts[i].style.transform = 'translate3d(0,' + ((1-w)*18).toFixed(2) + 'px,0)';
-        }
-      }
-    }
+    // Reduced motion: hold the opening frame, animate nothing.
+    mm.add('(prefers-reduced-motion: reduce)', function(){ paint(0); readout(0); });
   }
 
-  function onScroll(){
-    var p = progress();
-    if(Math.abs(p - lastP) >= 0.0005){
-      lastP = p;
-      target = p * (TOTAL - 1);
-      document.documentElement.style.setProperty('--heat', p.toFixed(3));
-      // Slow cinematic push across the whole film.
-      document.documentElement.style.setProperty('--push', (1 + p * 0.05).toFixed(4));
-      var gi = p < 0.30 ? 0 : p < 0.58 ? 1 : p < 0.88 ? 2 : 3;
-      guardOut.textContent = GUARDS[gi];
-      for(var i = 0; i < ticks.length; i++) ticks[i].dataset.on = (i === gi) ? '1' : '0';
-    }
-    if(!reduce) choreograph();
-  }
-
-  function loop(){
-    lastRaf = performance.now();
-    onScroll();
-    eased += (target - eased) * 0.14;
-    if(Math.abs(target - eased) < 0.01) eased = target;
-    paint(eased);
-    requestAnimationFrame(loop);
-  }
-
-  function sync(){ lastP = -1; onScroll(); eased = target; paint(eased); }
+  /* Test / deep-link hook. Scrubbed tweens need a moment to settle. */
   function jumpTo(f){
     f = Math.max(0, Math.min(1, f));
     var r = film.getBoundingClientRect();
     window.scrollTo(0, window.scrollY + r.top + (r.height - window.innerHeight) * f);
-    sync();
+    if(window.ScrollTrigger) ScrollTrigger.update();
   }
-  window.filmScrub = { sync: sync, jumpTo: jumpTo };
+  window.filmScrub = { jumpTo: jumpTo, sync: function(){ if(window.ScrollTrigger) ScrollTrigger.update(); } };
 
   function bump(){
     loaded++;
-    var p = loaded / TOTAL;
-    fill.style.width = (p*100).toFixed(1) + '%';
-    pct.textContent = Math.round(p*100) + '%';
-    if(loaded === TOTAL && !ready){
-      ready = true; loader.hidden = true; size();
-      var at = new URLSearchParams(location.search).get('at');
-      if(at !== null && !isNaN(parseFloat(at))) jumpTo(parseFloat(at)); else sync();
-    }
+    var pr = loaded / TOTAL;
+    fill.style.width = (pr*100).toFixed(1) + '%';
+    pct.textContent = Math.round(pr*100) + '%';
+    if(loaded === TOTAL && !ready) start();
   }
+
+  function start(){
+    ready = true;
+    loader.hidden = true;
+    layout(); size(); paint(0);
+    build();
+    ScrollTrigger.refresh();
+    var at = new URLSearchParams(location.search).get('at');
+    if(at !== null && !isNaN(parseFloat(at))) jumpTo(parseFloat(at));
+  }
+
   for(var i = 0; i < TOTAL; i++){
     (function(n){
       var img = new Image();
       img.decoding = 'async';
-      img.onload  = function(){ if(n === 0) size(); bump(); };
+      img.onload  = function(){ if(n === 0){ size(); paint(0); } bump(); };
       img.onerror = bump;
       img.src = src(n);
       images[n] = img;
@@ -651,16 +616,11 @@ footer{
 
   function layout(){ film.style.height = reduce ? 'auto' : '560vh'; }
   layout();
-  window.addEventListener('resize', function(){ layout(); size(); sync(); });
 
-  if(reduce){
-    window.addEventListener('scroll', onScroll, { passive:true });
-  } else {
-    requestAnimationFrame(loop);
-    window.addEventListener('scroll', function(){
-      if(performance.now() - lastRaf > 250) sync();
-    }, { passive:true });
-  }
+  window.addEventListener('resize', function(){
+    layout(); size();
+    if(window.ScrollTrigger) ScrollTrigger.refresh();
+  });
 
   ticks.forEach(function(btn){
     btn.addEventListener('click', function(){
@@ -670,8 +630,7 @@ footer{
     });
   });
 
-  setTimeout(function(){ if(!ready){ ready = true; loader.hidden = true; size(); sync(); } }, 9000);
-  onScroll();
+  setTimeout(function(){ if(!ready) start(); }, 9000);
 })();
 </script>
 </body>
